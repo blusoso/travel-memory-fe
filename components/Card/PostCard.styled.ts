@@ -34,6 +34,7 @@ export const IconWrapper = styled.div`
   top: 0.8em;
   right: 0.65em;
   z-index: 3;
+  cursor: pointer;
 
   svg {
     fill: ${({ theme }) => theme.mainBgColor};

@@ -64,6 +64,7 @@ const postSlice = createSlice({
       });
   },
 });
+
 export const selectPostList = (state: any) => state.post.postList;
 
 export default postSlice.reducer;
