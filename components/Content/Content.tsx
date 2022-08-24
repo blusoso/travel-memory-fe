@@ -1,29 +1,20 @@
 import { Grid } from "@mui/material";
 import React from "react";
-import Card from "../Card/Card";
-import { ContentWrapper } from "./Content.styled";
+import { useAppSelector } from "../../hooks/hooks";
+import { Post, selectPostList } from "../../store/post/postSlice";
+import PostCard from "../Card/PostCard";
 
 const Content = () => {
+  const postList = useAppSelector(selectPostList);
+
   return (
-    <ContentWrapper>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={4} lg={3}>
-          <Card />
+    <Grid container spacing={3}>
+      {postList.map((post: Post, index: number) => (
+        <Grid key={`${post.title}-${index}`} item xs={12} sm={4} lg={3}>
+          <PostCard post={post} />
         </Grid>
-        <Grid item xs={12} sm={4} lg={3}>
-          <Card />
-        </Grid>
-        <Grid item xs={12} sm={4} lg={3}>
-          <Card />
-        </Grid>
-        <Grid item xs={12} sm={4} lg={3}>
-          <Card />
-        </Grid>
-        <Grid item xs={12} sm={4} lg={3}>
-          <Card />
-        </Grid>
-      </Grid>
-    </ContentWrapper>
+      ))}
+    </Grid>
   );
 };
 

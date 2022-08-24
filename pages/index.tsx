@@ -1,20 +1,15 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import VideoBackground from "../components/Background/VideoBackground";
 import Content from "../components/Content/Content";
-import { GlassmorphismBackdrop } from "../components/Glassmorphism/Glassmorphism.styled";
+import Layout from "../components/Layout/Layout";
 import PostModal from "../components/Modal/PostModal/PostModal";
-import Nav from "../components/Nav/Nav";
 import { useAppSelector } from "../hooks/hooks";
 import { selectIsOpen } from "../store/modal/modalSlice";
-import { getPosts, selectPostList } from "../store/post/postSlice";
+import { getPosts } from "../store/post/postSlice";
 import { wrapper } from "../store/store";
 
 const Home: NextPage = () => {
-  const postList = useAppSelector(selectPostList);
   const isOpen = useAppSelector(selectIsOpen);
-
-  console.log(postList);
 
   return (
     <>
@@ -25,14 +20,9 @@ const Home: NextPage = () => {
       </Head>
 
       <PostModal isOpen={isOpen} />
-      <div style={{ position: "relative" }}>
-        <VideoBackground />
-        <GlassmorphismBackdrop />
-      </div>
-      <Nav />
-      <main style={{ width: "100%", height: "100%" }}>
+      <Layout>
         <Content />
-      </main>
+      </Layout>
     </>
   );
 };

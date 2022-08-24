@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ContentWrapper = styled.div`
+export const LayoutWrapper = styled.div`
   position: relative;
   min-height: 100%;
   height: auto;

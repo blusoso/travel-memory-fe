@@ -14,8 +14,19 @@ export const STATE_STATUS = {
   FAILED: "failed",
 };
 
+export type Post = {
+  _id: string;
+  title: string;
+  message: string;
+  creator: string;
+  tags: string[];
+  selectedFile: string;
+  likeCount: number;
+  createAt: Date;
+};
+
 type initialStateType = {
-  postList: [];
+  postList: Post[];
   type: string;
   status: string;
   error: string | undefined;
