@@ -12,5 +12,14 @@ export const muiTheme = createTheme({
         },
       },
     },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "rgba(16 18 27 / 40%)",
+          color: "#f9fafb",
+          borderRadius: "0.8em",
+        },
+      },
+    },
   },
 });

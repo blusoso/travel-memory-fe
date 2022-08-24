@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchPosts } from "../api";
+import { fetchPosts } from "./api";
 
 export const ACTION_TYPE = {
   NONE: "NONE",

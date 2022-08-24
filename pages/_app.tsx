@@ -6,6 +6,8 @@ import { styledComponentTheme } from "../styles/styledComponentTheme";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { ThemeProvider as ThemeProviderMui } from "@mui/material/styles";
 import { muiTheme } from "../styles/muiTheme";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

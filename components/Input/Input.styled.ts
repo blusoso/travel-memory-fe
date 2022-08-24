@@ -11,10 +11,11 @@ type BaseIconProps = {
 
 type InputStyledProps = {
   width?: string;
+  bgColor?: string;
 } & BaseIconProps;
 
 export const InputStyled = styled.input<InputStyledProps>`
-  background-color: ${({ theme }) => theme.darkBgColor};
+  background-color: ${({ theme, bgColor }) => bgColor || theme.darkBgColor};
   padding: ${({ iconStart, iconEnd }) =>
     iconStart
       ? "0.8em 1.2em 0.8em 3em"
@@ -24,6 +25,20 @@ export const InputStyled = styled.input<InputStyledProps>`
   border-radius: 0.6em;
   border: 0;
   width: ${({ width }) => width || ""};
+`;
+
+type TextareaStyledProps = {
+  width?: string;
+  bgColor?: string;
+};
+
+export const TextareaStyled = styled.textarea<TextareaStyledProps>`
+  background-color: ${({ theme, bgColor }) => bgColor || theme.darkBgColor};
+  border-radius: 0.6em;
+  border: 1px solid ${({ theme }) => theme.borderColor};
+  width: ${({ width }) => width || ""};
+  padding: 1em 1.2em;
+  font-size: 1rem;
 `;
 
 type IconInputWrapperProps = {} & BaseIconProps;

@@ -1,30 +1,29 @@
-import { Box, Grid, Modal, Typography } from "@mui/material";
 import React from "react";
-import {
-  BaseModalBox,
-  CloseIconWrapper,
-  PostWrapper,
-} from "./BaseModal.styled";
+import { Modal } from "@mui/material";
+import { BaseModalBox, CloseIconWrapper } from "./BaseModal.styled";
 import CloseIcon from "@mui/icons-material/Close";
-import UserAvatar from "../Avatar/UserAvatar";
-import Input from "../Input/Input";
+import { useAppDispatch } from "../../hooks/hooks";
+import { closeModal } from "../../store/modal/modalSlice";
 
 type BaseModalProps = {
+  children: React.ReactNode;
   isOpen: boolean;
-  handleClose?: () => void;
 };
 
-const BaseModal = ({ isOpen, handleClose }: BaseModalProps) => {
+const BaseModal = ({ children, isOpen }: BaseModalProps) => {
+  const dispatch = useAppDispatch();
+
+  const handleClose = () => {
+    dispatch(closeModal());
+  };
+
   return (
     <Modal open={isOpen} onClose={handleClose}>
       <BaseModalBox>
-        <CloseIconWrapper>
+        <CloseIconWrapper onClick={handleClose}>
           <CloseIcon />
         </CloseIconWrapper>
-        <PostWrapper>
-          <UserAvatar letter="S" />
-          <Input name="post" />
-        </PostWrapper>
+        {children}
       </BaseModalBox>
     </Modal>
   );

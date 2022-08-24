@@ -1,25 +1,20 @@
-import { AppBar, Grid, Toolbar, Typography } from "@mui/material";
-import { Container } from "@mui/system";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import VideoBackground from "../components/Background/VideoBackground";
 import Content from "../components/Content/Content";
-import Form from "../components/Form/Form";
-import {
-  Glassmorphism,
-  GlassmorphismBackdrop,
-} from "../components/Glassmorphism/Glassmorphism.styled";
-import BaseModal from "../components/Modal/BaseModal";
+import { GlassmorphismBackdrop } from "../components/Glassmorphism/Glassmorphism.styled";
+import PostModal from "../components/Modal/PostModal/PostModal";
 import Nav from "../components/Nav/Nav";
-import Posts from "../components/Posts/Posts";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { useAppSelector } from "../hooks/hooks";
+import { selectIsOpen } from "../store/modal/modalSlice";
 import { getPosts, selectPostList } from "../store/post/postSlice";
 import { wrapper } from "../store/store";
 
 const Home: NextPage = () => {
   const postList = useAppSelector(selectPostList);
+  const isOpen = useAppSelector(selectIsOpen);
+
+  console.log(postList);
 
   return (
     <>
@@ -29,7 +24,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <BaseModal isOpen />
+      <PostModal isOpen={isOpen} />
       <div style={{ position: "relative" }}>
         <VideoBackground />
         <GlassmorphismBackdrop />

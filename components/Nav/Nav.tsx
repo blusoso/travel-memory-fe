@@ -9,11 +9,14 @@ import {
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Badge, Button } from "@mui/material";
 import UserAvatar from "../Avatar/UserAvatar";
+import { useAppDispatch } from "../../hooks/hooks";
+import { openModal } from "../../store/modal/modalSlice";
 
 const MENU_LIST = ["discover", "calendar"];
 
 const Nav = () => {
   const [selectedMenu, setSelectedMenu] = useState(MENU_LIST[0]);
+  const dispatch = useAppDispatch();
 
   return (
     <NavContainer>
@@ -45,7 +48,9 @@ const Nav = () => {
         </Badge>
         <UserAvatar letter="S" />
       </ProfileContainer>
-      <Button variant="outlined">Post</Button>
+      <Button variant="outlined" onClick={() => dispatch(openModal())}>
+        Post
+      </Button>
     </NavContainer>
   );
 };

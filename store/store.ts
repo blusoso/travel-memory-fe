@@ -7,9 +7,11 @@ import {
 } from "@reduxjs/toolkit";
 import { createWrapper, HYDRATE } from "next-redux-wrapper";
 import post from "./post/postSlice";
+import modal from "./modal/modalSlice";
 
 const combinedReducer = combineReducers({
   post,
+  modal,
 });
 
 const reducer = (
