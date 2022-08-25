@@ -10,3 +10,13 @@ export const PostWrapper = styled.div`
   display: flex;
   gap: 1em;
 `;
+
+export const ImageFileLabel = styled.label`
+  svg {
+    cursor: pointer;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+`;

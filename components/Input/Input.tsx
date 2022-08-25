@@ -17,6 +17,10 @@ type InputProps = {
   iconEnd?: any;
   autoFocus?: boolean;
   bgColor?: string;
+  required?: boolean;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
 };
 
 export const FORM_TYPE = {
@@ -35,6 +39,8 @@ const Input = ({
   iconEnd,
   autoFocus = false,
   bgColor,
+  required = false,
+  onChange,
 }: InputProps) => {
   const renderInputForm = () => (
     <>
@@ -48,6 +54,8 @@ const Input = ({
         iconEnd={iconEnd ? true : false}
         autoFocus={autoFocus}
         bgColor={bgColor}
+        required={required}
+        onChange={onChange}
       />
       {iconEnd && <IconInputWrapper iconEnd>{iconEnd}</IconInputWrapper>}
     </>
@@ -61,6 +69,8 @@ const Input = ({
       rows={rows}
       autoFocus={autoFocus}
       bgColor={bgColor}
+      required={required}
+      onChange={onChange}
     />
   );
 

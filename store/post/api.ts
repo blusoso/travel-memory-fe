@@ -2,13 +2,13 @@ import axios from "axios";
 
 const url = "http://localhost:5000/posts";
 
-type PostType = {
+export type NewPostType = {
   title: string;
   message: string;
   creator: string;
-  tags: string[];
-  selectedFile: string;
+  tags?: string[];
+  selectedFile: any;
 };
 
 export const fetchPosts = () => axios.get(url);
-export const createPost = (newPost: PostType) => axios.post(url, newPost);
+export const createPost = (newPost: NewPostType) => axios.post(url, newPost);

@@ -24,7 +24,8 @@ export const InputStyled = styled.input<InputStyledProps>`
       : "0.8em 1.2em"};
   border-radius: 0.6em;
   border: 0;
-  width: ${({ width }) => width || ""};
+  width: ${({ width }) => width || "100%"};
+  font-size: 1rem;
 `;
 
 type TextareaStyledProps = {
@@ -36,7 +37,7 @@ export const TextareaStyled = styled.textarea<TextareaStyledProps>`
   background-color: ${({ theme, bgColor }) => bgColor || theme.darkBgColor};
   border-radius: 0.6em;
   border: 1px solid ${({ theme }) => theme.borderColor};
-  width: ${({ width }) => width || ""};
+  width: ${({ width }) => width || "100%"};
   padding: 1em 1.2em;
   font-size: 1rem;
 `;

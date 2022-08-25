@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchPosts } from "./api";
+import { createPost, fetchPosts, NewPostType } from "./api";
 
 export const ACTION_TYPE = {
   NONE: "NONE",
@@ -20,7 +20,7 @@ export type Post = {
   message: string;
   creator: string;
   tags: string[];
-  selectedFile: string;
+  selectedFile: any;
   likeCount: number;
   createAt: Date;
 };
@@ -45,6 +45,15 @@ export const getPosts = createAsyncThunk("post/getPosts", async () => {
   return data;
 });
 
+export const addPost = createAsyncThunk(
+  "post/addPost",
+  async (newPost: NewPostType) => {
+    const { data } = await createPost(newPost);
+
+    return data;
+  }
+);
+
 const postSlice = createSlice({
   name: "post",
   initialState,
@@ -61,6 +70,10 @@ const postSlice = createSlice({
       .addCase(getPosts.rejected, (state, action) => {
         state.status = STATE_STATUS.FAILED;
         state.error = action.error.message;
+      })
+      .addCase(addPost.fulfilled, (state, action) => {
+        state.status = STATE_STATUS.SUCCEEDED;
+        state.postList.push(action.payload);
       });
   },
 });
