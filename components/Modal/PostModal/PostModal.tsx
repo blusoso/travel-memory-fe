@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { ThemeContext } from "styled-components";
 import UserAvatar from "../../Avatar/UserAvatar";
 import DateRangeInput from "../../DatePicker/DateRangeInput";
@@ -9,6 +9,12 @@ import BaseModal from "../BaseModal";
 import { ImageFileLabel, PostWrapper } from "./PostModal.styled";
 import { getBase64 } from "../../../utils/file";
 import { NewPostType } from "../../../store/post/api";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { addPost } from "../../../store/post/postSlice";
+import {
+  closeModal,
+  selectSelectedPost,
+} from "../../../store/modal/modalSlice";
 
 type PostModalType = {
   isOpen: boolean;
@@ -16,17 +22,39 @@ type PostModalType = {
 
 const PostModal = ({ isOpen }: PostModalType) => {
   const themeContext = useContext(ThemeContext);
-  const [postData, setPostData] = useState<NewPostType>({
+  const dispatch = useAppDispatch();
+  const selectedPost = useAppSelector(selectSelectedPost);
+
+  const initPostData = {
     title: "",
     message: "",
-    creator: "",
+    creator: "bluso.so",
     tags: [],
     selectedFile: "",
-  });
+  };
+  const [postData, setPostData] = useState<NewPostType>(initPostData);
+
+  useEffect(() => {
+    if (selectedPost) {
+      setPostData({
+        title: selectedPost?.title,
+        message: selectedPost?.message,
+        creator: selectedPost?.creator,
+        tags: selectedPost?.tags,
+        selectedFile: selectedPost?.selectedFile,
+      });
+    } else {
+      setPostData(initPostData);
+    }
+  }, [selectedPost]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    console.log("submit");
+
+    if (postData.title && postData.message && postData.creator) {
+      dispatch(addPost(postData));
+      dispatch(closeModal());
+    }
   };
 
   const handleFileInputChange = async (e: any) => {
@@ -50,6 +78,7 @@ const PostModal = ({ isOpen }: PostModalType) => {
           <div style={{ marginBottom: "0.7em" }}>
             <Input
               name="title"
+              value={postData.title}
               placeholder="Title"
               autoFocus
               bgColor={themeContext.mainBgColor}
@@ -73,6 +102,7 @@ const PostModal = ({ isOpen }: PostModalType) => {
             <Input
               type={FORM_TYPE.TEXTAREA}
               name="message"
+              value={postData.message}
               placeholder="Message"
               bgColor={themeContext.mainBgColor}
               onChange={handleChange}

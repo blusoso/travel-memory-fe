@@ -48,7 +48,7 @@ const Nav = () => {
         </Badge>
         <UserAvatar letter="S" />
       </ProfileContainer>
-      <Button variant="outlined" onClick={() => dispatch(openModal())}>
+      <Button variant="outlined" onClick={() => dispatch(openModal({}))}>
         Post
       </Button>
     </NavContainer>

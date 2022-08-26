@@ -10,6 +10,7 @@ type InputProps = {
   type?: string;
   inputType?: string;
   name: string;
+  value?: string;
   placeholder?: string;
   width?: string;
   rows?: number;
@@ -32,6 +33,7 @@ const Input = ({
   type = FORM_TYPE.INPUT,
   inputType = "text",
   name = "",
+  value = "",
   placeholder,
   width,
   rows = 2,
@@ -48,6 +50,7 @@ const Input = ({
       <InputStyled
         type={inputType}
         name={name}
+        value={value}
         placeholder={placeholder}
         width={width}
         iconStart={iconStart ? true : false}
@@ -64,6 +67,7 @@ const Input = ({
   const renderTextareaForm = () => (
     <TextareaStyled
       name={name}
+      value={value}
       placeholder={placeholder}
       width={width}
       rows={rows}

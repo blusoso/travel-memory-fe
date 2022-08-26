@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
 import React from "react";
 import { useAppSelector } from "../../hooks/hooks";
 import { Post, selectPostList } from "../../store/post/postSlice";
@@ -9,11 +9,15 @@ const Content = () => {
 
   return (
     <Grid container spacing={3}>
-      {postList.map((post: Post, index: number) => (
-        <Grid key={`${post.title}-${index}`} item xs={12} sm={4} lg={3}>
-          <PostCard post={post} />
-        </Grid>
-      ))}
+      {!postList.length ? (
+        <CircularProgress />
+      ) : (
+        postList.map((post: Post, index: number) => (
+          <Grid key={`${post.title}-${index}`} item xs={12} sm={4} lg={3}>
+            <PostCard post={post} />
+          </Grid>
+        ))
+      )}
     </Grid>
   );
 };
