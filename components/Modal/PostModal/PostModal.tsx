@@ -10,7 +10,7 @@ import { ImageFileLabel, PostWrapper } from "./PostModal.styled";
 import { getBase64 } from "../../../utils/file";
 import { NewPostType } from "../../../store/post/api";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
-import { addPost } from "../../../store/post/postSlice";
+import { addPost, updatePost } from "../../../store/post/postSlice";
 import {
   closeModal,
   selectSelectedPost,
@@ -26,6 +26,7 @@ const PostModal = ({ isOpen }: PostModalType) => {
   const selectedPost = useAppSelector(selectSelectedPost);
 
   const initPostData = {
+    _id: "",
     title: "",
     message: "",
     creator: "bluso.so",
@@ -37,6 +38,7 @@ const PostModal = ({ isOpen }: PostModalType) => {
   useEffect(() => {
     if (selectedPost) {
       setPostData({
+        _id: selectedPost?._id,
         title: selectedPost?.title,
         message: selectedPost?.message,
         creator: selectedPost?.creator,
@@ -52,7 +54,11 @@ const PostModal = ({ isOpen }: PostModalType) => {
     e.preventDefault();
 
     if (postData.title && postData.message && postData.creator) {
-      dispatch(addPost(postData));
+      if (postData._id !== "") {
+        dispatch(updatePost(postData));
+      } else {
+        dispatch(addPost(postData));
+      }
       dispatch(closeModal());
     }
   };

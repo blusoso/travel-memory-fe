@@ -56,10 +56,11 @@ export const addPost = createAsyncThunk(
 
 export const updatePost = createAsyncThunk(
   "post/updatePost",
-  async (id: string, updatedPost: any) => {
-    const { data } = await patchPost(id, updatedPost);
-
-    return data;
+  async (updatedPost: NewPostType) => {
+    if (updatedPost._id) {
+      const { data } = await patchPost(updatedPost._id, updatedPost);
+      return data;
+    }
   }
 );
 
@@ -86,6 +87,23 @@ const postSlice = createSlice({
         state.postList.push(action.payload);
       })
       .addCase(addPost.rejected, (state, action) => {
+        state.status = STATE_STATUS.FAILED;
+        state.error = action.error.message;
+        console.log(action.error.message);
+      })
+      .addCase(updatePost.fulfilled, (state, action) => {
+        state.status = STATE_STATUS.SUCCEEDED;
+        console.log(action.payload);
+
+        const updatedPost = state.postList.map((post) => {
+          if (post._id === action.payload._id) {
+            return action.payload;
+          }
+          return post;
+        });
+        state.postList = updatedPost;
+      })
+      .addCase(updatePost.rejected, (state, action) => {
         state.status = STATE_STATUS.FAILED;
         state.error = action.error.message;
         console.log(action.error.message);
