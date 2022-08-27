@@ -57,6 +57,7 @@ const PostModal = ({ isOpen }: PostModalType) => {
       if (postData._id !== "") {
         dispatch(updatePost(postData));
       } else {
+        delete postData._id;
         dispatch(addPost(postData));
       }
       dispatch(closeModal());
@@ -120,7 +121,7 @@ const PostModal = ({ isOpen }: PostModalType) => {
           </ImageFileLabel>
           <div style={{ textAlign: "right" }}>
             <Button type="submit" variant="outlined">
-              Post
+              {postData._id ? "Edit" : "Post"}
             </Button>
           </div>
         </form>

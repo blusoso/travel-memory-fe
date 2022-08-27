@@ -4,7 +4,7 @@ import MoreHorizon from "./MoreHorizon";
 import { MORE_HORIZON_POST_ITEM_TEXT } from "../../Card/PostCard";
 import { useAppDispatch } from "../../../hooks/hooks";
 import { openModal } from "../../../store/modal/modalSlice";
-import { Post } from "../../../store/post/postSlice";
+import { deletePost, Post } from "../../../store/post/postSlice";
 
 type PostMoreHorizonProps = {
   listBox: ListItemType[];
@@ -22,6 +22,8 @@ const PostMoreHorizon = ({ listBox, post }: PostMoreHorizonProps) => {
   const onSelectedItem = (selectedItem: ListItemType) => {
     if (selectedItem.text === MORE_HORIZON_POST_ITEM_TEXT.EDIT) {
       dispatch(openModal({ post }));
+    } else if (selectedItem.text === MORE_HORIZON_POST_ITEM_TEXT.DELETE) {
+      dispatch(deletePost(post._id));
     }
     toggleListBox();
   };
