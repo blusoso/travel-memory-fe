@@ -1,7 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import {
   createPost,
   fetchPosts,
+  likePost,
   NewPostType,
   patchPost,
   removePost,
@@ -74,7 +75,17 @@ export const deletePost = createAsyncThunk(
   "post/deletePost",
   async (id: string) => {
     const { data } = await removePost(id);
+
     return { data, id };
+  }
+);
+
+export const updateLikeCount = createAsyncThunk(
+  "post/updateLikeCount",
+  async ({ id, isLike }: { id: string; isLike: boolean }) => {
+    const { data } = await likePost(id, isLike);
+
+    return data;
   }
 );
 
@@ -84,50 +95,54 @@ const postSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(getPosts.pending, (state) => {
-        state.status = STATE_STATUS.LOADING;
-      })
+      .addCase(getPosts.pending, (state) => {})
       .addCase(getPosts.fulfilled, (state, action) => {
-        state.status = STATE_STATUS.SUCCEEDED;
         state.postList = action.payload;
       })
-      .addCase(getPosts.rejected, (state, action) => {
-        state.status = STATE_STATUS.FAILED;
-        state.error = action.error.message;
-        console.log(action.error.message);
-      })
+      .addCase(getPosts.rejected, (state, action) => {})
       .addCase(addPost.fulfilled, (state, action) => {
-        state.status = STATE_STATUS.SUCCEEDED;
         state.postList.push(action.payload);
       })
-      .addCase(addPost.rejected, (state, action) => {
-        state.status = STATE_STATUS.FAILED;
-        state.error = action.error.message;
-        console.log(action.error.message);
-      })
-      .addCase(updatePost.fulfilled, (state, action) => {
-        state.status = STATE_STATUS.SUCCEEDED;
-
-        const updatedPost = state.postList.map((post) => {
-          if (post._id === action.payload._id) {
-            return action.payload;
-          }
-          return post;
-        });
-        state.postList = updatedPost;
-      })
-      .addCase(updatePost.rejected, (state, action) => {
-        state.status = STATE_STATUS.FAILED;
-        state.error = action.error.message;
-        console.log(action.error.message);
-      })
+      .addCase(addPost.rejected, (state, action) => {})
       .addCase(deletePost.fulfilled, (state, action) => {
-        state.status = STATE_STATUS.SUCCEEDED;
         state.postList = state.postList.filter(
           (post) => post._id !== action.payload.id
         );
-        console.log(action.payload);
-      });
+      })
+      .addMatcher(
+        (action) => action.type.endsWith("/pending"),
+        (state, action) => {
+          state.status = STATE_STATUS.LOADING;
+        }
+      )
+      .addMatcher(
+        (action) => action.type.endsWith("/fulfilled"),
+        (state, action) => {
+          state.status = STATE_STATUS.FAILED;
+          state.error = action.error.message;
+          console.log(action.error.message);
+        }
+      )
+      .addMatcher(
+        (action) => action.type.endsWith("/rejected"),
+        (state, action) => {
+          state.status = STATE_STATUS.LOADING;
+        }
+      )
+      .addMatcher(
+        isAnyOf(updatePost.fulfilled, updateLikeCount.fulfilled),
+        (state, action) => {
+          state.status = STATE_STATUS.SUCCEEDED;
+          console.log(action.type);
+          const updatedPost = state.postList.map((post) => {
+            if (post._id === action.payload._id) {
+              return action.payload;
+            }
+            return post;
+          });
+          state.postList = updatedPost;
+        }
+      );
   },
 });
 

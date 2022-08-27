@@ -16,12 +16,11 @@ type FavoriteProps = {
 const Favorite = ({ top, left, right, bottom, onFavorite }: FavoriteProps) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
-  useEffect(() => {
-    onFavorite(isFavorite);
-  }, [isFavorite, onFavorite]);
-
   const handleFavorite = () => {
-    setIsFavorite(!isFavorite);
+    const toggleFav = !isFavorite;
+
+    setIsFavorite(toggleFav);
+    onFavorite(toggleFav);
   };
 
   return (

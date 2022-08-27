@@ -11,12 +11,13 @@ import {
 import { ThemeContext } from "styled-components";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
-import { Post } from "../../store/post/postSlice";
+import { Post, updateLikeCount } from "../../store/post/postSlice";
 import Favorite from "../Icon/Favorite/Favorite";
 import moment from "moment";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PostMoreHorizon from "../Icon/MoreHorizon/PostMoreHorizon";
+import { useAppDispatch } from "../../hooks/hooks";
 
 const PREFIX_IMAGE_URL = "/assets/images";
 const ICON_RIGHT_POSITION = "0.65em";
@@ -46,6 +47,8 @@ type PostCardProps = {
 const PostCard = ({ post }: PostCardProps) => {
   const { secondaryColor } = useContext(ThemeContext);
   const router = useRouter();
+  const dispatch = useAppDispatch();
+
   const postImg =
     post.selectedFile || `${PREFIX_IMAGE_URL}/default/post-image.jpg`;
 
@@ -55,7 +58,7 @@ const PostCard = ({ post }: PostCardProps) => {
   };
 
   const handleFavorite = (isFavorite: boolean) => {
-    console.log(isFavorite);
+    dispatch(updateLikeCount({ id: post._id, isLike: isFavorite }));
   };
 
   const renderIcon = () => (
