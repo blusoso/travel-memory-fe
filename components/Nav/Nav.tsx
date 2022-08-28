@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import SearchInput from "../Input/SearchInput/SearchInput";
 import {
   MenuContainer,
@@ -11,12 +12,17 @@ import { Badge, Button } from "@mui/material";
 import UserAvatar from "../Avatar/UserAvatar";
 import { useAppDispatch } from "../../hooks/hooks";
 import { openModal } from "../../store/modal/modalSlice";
+import { useRouter } from "next/router";
 
 const MENU_LIST = ["discover", "calendar"];
 
 const Nav = () => {
-  const [selectedMenu, setSelectedMenu] = useState(MENU_LIST[0]);
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { data: session } = useSession();
+  const [selectedMenu, setSelectedMenu] = useState(MENU_LIST[0]);
+
+  const user = "xx";
 
   return (
     <NavContainer>
@@ -46,7 +52,22 @@ const Nav = () => {
         >
           <NotificationsIcon />
         </Badge>
-        <UserAvatar letter="S" />
+        {session && session.user ? (
+          <>
+            {session.user.image ? (
+              <UserAvatar image={session.user.image} />
+            ) : (
+              <UserAvatar letter="S" />
+            )}
+            <Button variant="outlined" onClick={() => signOut()}>
+              Sign out
+            </Button>
+          </>
+        ) : (
+          <Button variant="outlined" onClick={() => signIn()}>
+            Sign in
+          </Button>
+        )}
       </ProfileContainer>
       <Button variant="outlined" onClick={() => dispatch(openModal({}))}>
         Post

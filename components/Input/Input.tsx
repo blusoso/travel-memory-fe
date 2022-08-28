@@ -50,7 +50,7 @@ const Input = ({
       <InputStyled
         type={inputType}
         name={name}
-        value={value}
+        defaultValue={value}
         placeholder={placeholder}
         width={width}
         iconStart={iconStart ? true : false}
@@ -67,7 +67,7 @@ const Input = ({
   const renderTextareaForm = () => (
     <TextareaStyled
       name={name}
-      value={value}
+      defaultValue={value}
       placeholder={placeholder}
       width={width}
       rows={rows}

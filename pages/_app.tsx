@@ -6,14 +6,17 @@ import { styledComponentTheme } from "../styles/styledComponentTheme";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { ThemeProvider as ThemeProviderMui } from "@mui/material/styles";
 import { muiTheme } from "../styles/muiTheme";
+import { SessionProvider } from "next-auth/react";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <ThemeProviderStyledComponent theme={styledComponentTheme}>
-      <ThemeProviderMui theme={muiTheme}>
-        <Component {...pageProps} />
-      </ThemeProviderMui>
-    </ThemeProviderStyledComponent>
+    <SessionProvider session={session}>
+      <ThemeProviderStyledComponent theme={styledComponentTheme}>
+        <ThemeProviderMui theme={muiTheme}>
+          <Component {...pageProps} />
+        </ThemeProviderMui>
+      </ThemeProviderStyledComponent>
+    </SessionProvider>
   );
 }
 

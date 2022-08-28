@@ -119,8 +119,8 @@ const postSlice = createSlice({
         (action) => action.type.endsWith("/fulfilled"),
         (state, action) => {
           state.status = STATE_STATUS.FAILED;
-          state.error = action.error.message;
-          console.log(action.error.message);
+          state.error = action.error?.message;
+          console.log(action.error?.message);
         }
       )
       .addMatcher(
