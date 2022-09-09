@@ -7,6 +7,8 @@ import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import { CardContent } from "@mui/material";
 import { CardWrapper } from "../../components/Login/Login.styled";
+import LoginForm from "../../components/Login/LoginForm";
+import { Hr } from "../../components/Card/PostCard.styled";
 
 const PROVIDER_NAME = {
   FACEBOOK: "facebook",
@@ -49,6 +51,10 @@ const Auth = ({ providers }: AuthProps) => {
     <Layout>
       <CardWrapper>
         <CardContent>
+          <div style={{ textAlign: "center" }}>
+            <LoginForm />
+          </div>
+          <Hr style={{ margin: "1em 0" }} />
           {Object.values(providers).map((provider: Provider, index: number) => (
             <React.Fragment key={provider.name}>
               <SocialSignIn

@@ -8,10 +8,12 @@ import {
 import { createWrapper, HYDRATE } from "next-redux-wrapper";
 import post from "./post/postSlice";
 import modal from "./modal/modalSlice";
+import auth from "./auth/authSlice";
 
 const combinedReducer = combineReducers({
   post,
   modal,
+  auth,
 });
 
 const reducer = (

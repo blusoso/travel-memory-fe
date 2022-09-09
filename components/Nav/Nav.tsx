@@ -13,8 +13,17 @@ import UserAvatar from "../Avatar/UserAvatar";
 import { useAppDispatch } from "../../hooks/hooks";
 import { openModal } from "../../store/modal/modalSlice";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
-const MENU_LIST = ["discover", "calendar"];
+type MENU_LIST_TYPE = {
+  name: string;
+  link: string;
+};
+
+const MENU_LIST: MENU_LIST_TYPE[] = [
+  { name: "discover", link: "/" },
+  { name: "calendar", link: "/" },
+];
 
 const Nav = () => {
   const dispatch = useAppDispatch();
@@ -28,14 +37,15 @@ const Nav = () => {
     <NavContainer>
       <MenuContainer>
         <ul>
-          {MENU_LIST.map((menu, index) => (
-            <li
-              key={`${menu}-${index}`}
-              className={menu === selectedMenu ? "--active" : "--inactive"}
-              onClick={() => setSelectedMenu(menu)}
-            >
-              {menu}
-            </li>
+          {MENU_LIST.map((menu: MENU_LIST_TYPE, index: number) => (
+            <Link href={menu.link} key={`${menu.name}-${index}`}>
+              <li
+                className={menu === selectedMenu ? "--active" : "--inactive"}
+                onClick={() => setSelectedMenu(menu)}
+              >
+                {menu.name}
+              </li>
+            </Link>
           ))}
         </ul>
       </MenuContainer>

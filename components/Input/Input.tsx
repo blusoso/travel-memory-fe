@@ -29,9 +29,14 @@ export const FORM_TYPE = {
   TEXTAREA: "textarea",
 };
 
+export const INPUT_TYPE = {
+  TEXT: "text",
+  PASSWORD: "password",
+};
+
 const Input = ({
   type = FORM_TYPE.INPUT,
-  inputType = "text",
+  inputType = INPUT_TYPE.TEXT,
   name = "",
   value = "",
   placeholder,
