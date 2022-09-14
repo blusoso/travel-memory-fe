@@ -15,7 +15,6 @@ type SocialSignInProps = {
 };
 
 const SocialSignIn = ({ provider, icon, isLast }: SocialSignInProps) => {
-  console.log(isLast);
   return (
     <>
       {icon && (

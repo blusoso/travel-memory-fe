@@ -1,6 +1,6 @@
-import axios from "axios";
+import { API } from "../api/api";
 
-const url = "http://localhost:5000/posts";
+const POST_PATH = "/posts";
 
 export type NewPostType = {
   _id?: string;
@@ -11,10 +11,11 @@ export type NewPostType = {
   selectedFile: any;
 };
 
-export const fetchPosts = () => axios.get(url);
-export const createPost = (newPost: NewPostType) => axios.post(url, newPost);
+export const fetchPosts = () => API.get(POST_PATH);
+export const createPost = (newPost: NewPostType) =>
+  API.post(POST_PATH, newPost);
 export const patchPost = (id: string, updatedPost: NewPostType) =>
-  axios.patch(`${url}/${id}`, updatedPost);
-export const removePost = (id: string) => axios.delete(`${url}/${id}`);
+  API.patch(`${POST_PATH}/${id}`, updatedPost);
+export const removePost = (id: string) => API.delete(`${POST_PATH}/${id}`);
 export const likePost = (id: string, isLike: boolean) =>
-  axios.patch(`${url}/${id}/like-post/${isLike}`);
+  API.patch(`${POST_PATH}/${id}/like-post/${isLike}`);

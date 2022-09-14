@@ -10,18 +10,32 @@ export const AUTH_TYPE = {
   SIGN_UP: "Sign UP",
 };
 
+export type UserData = {
+  firstName?: string;
+  lastName?: string;
+  email: string;
+  password: string;
+  confirmPassword?: string;
+};
+
 type AuthFormProps = {
   type: string;
   description: string;
   linkText: string;
+  onClickLink: () => void;
+  onSubmit: (userData: UserData) => void;
 };
 
 const AuthForm = ({
   type = AUTH_TYPE.SIGN_IN,
   description,
   linkText,
+  onClickLink,
+  onSubmit,
 }: AuthFormProps) => {
-  const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState<UserData>({
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -35,7 +49,7 @@ const AuthForm = ({
   };
 
   const handleSubmit = () => {
-    console.log(userData);
+    onSubmit(userData);
   };
 
   return (
@@ -45,7 +59,7 @@ const AuthForm = ({
       </Typography>
       <Typography component="p" sx={{ marginBottom: "1em" }}>
         {description}{" "}
-        <span style={{ cursor: "pointer" }}>
+        <span style={{ cursor: "pointer" }} onClick={onClickLink}>
           <u>{linkText}</u>
         </span>
       </Typography>
@@ -54,14 +68,14 @@ const AuthForm = ({
           <Grid container spacing={1}>
             <Grid item xs={6}>
               <Input
-                name="first_name"
+                name="firstName"
                 placeholder="First name"
                 onChange={handleChange}
               />
             </Grid>
             <Grid item xs={6}>
               <Input
-                name="last_name"
+                name="lastName"
                 placeholder="Last name"
                 onChange={handleChange}
               />

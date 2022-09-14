@@ -1,5 +1,5 @@
 import { CardContent, Typography } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import UserAvatar from "../Avatar/UserAvatar";
 import {
@@ -18,6 +18,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PostMoreHorizon from "../Icon/MoreHorizon/PostMoreHorizon";
 import { useAppDispatch } from "../../hooks/hooks";
+import { UserLocalStorageData } from "../Nav/Nav";
 
 const PREFIX_IMAGE_URL = "/assets/images";
 const ICON_RIGHT_POSITION = "0.65em";
@@ -48,6 +49,18 @@ const PostCard = ({ post }: PostCardProps) => {
   const { secondaryColor } = useContext(ThemeContext);
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [userLoggedIn, setUserLoggedIn] = useState<
+    UserLocalStorageData | undefined
+  >(undefined);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("profile");
+      if (user) {
+        setUserLoggedIn(JSON.parse(user || "").result);
+      }
+    }
+  }, []);
 
   const postImg =
     post.selectedFile || `${PREFIX_IMAGE_URL}/default/post-image.jpg`;
@@ -68,6 +81,7 @@ const PostCard = ({ post }: PostCardProps) => {
         right={ICON_RIGHT_POSITION}
         onFavorite={handleFavorite}
       />
+      {/* {userLoggedIn?.email === post.creator} */}
       <PostMoreHorizon listBox={MORE_HORIZON_LIST} post={post} />
     </>
   );

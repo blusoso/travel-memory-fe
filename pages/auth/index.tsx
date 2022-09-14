@@ -9,6 +9,7 @@ import { CardContent } from "@mui/material";
 import { CardWrapper } from "../../components/Login/Login.styled";
 import LoginForm from "../../components/Login/LoginForm";
 import { Hr } from "../../components/Card/PostCard.styled";
+import SignUpForm from "../../components/SignUp/SignUpForm";
 
 const PROVIDER_NAME = {
   FACEBOOK: "facebook",
@@ -28,6 +29,8 @@ type AuthProps = {
 };
 
 const Auth = ({ providers }: AuthProps) => {
+  const [isLoginForm, setIsLoginForm] = useState(true);
+
   const renderIcon = (providerId: string) => {
     const id = providerId.toLowerCase();
 
@@ -52,7 +55,11 @@ const Auth = ({ providers }: AuthProps) => {
       <CardWrapper>
         <CardContent>
           <div style={{ textAlign: "center" }}>
-            <LoginForm />
+            {isLoginForm ? (
+              <LoginForm onClickLink={() => setIsLoginForm(false)} />
+            ) : (
+              <SignUpForm onClickLink={() => setIsLoginForm(true)} />
+            )}
           </div>
           <Hr style={{ margin: "1em 0" }} />
           {Object.values(providers).map((provider: Provider, index: number) => (

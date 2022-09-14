@@ -126,14 +126,13 @@ const postSlice = createSlice({
       .addMatcher(
         (action) => action.type.endsWith("/rejected"),
         (state, action) => {
-          state.status = STATE_STATUS.LOADING;
+          state.status = STATE_STATUS.FAILED;
         }
       )
       .addMatcher(
         isAnyOf(updatePost.fulfilled, updateLikeCount.fulfilled),
         (state, action) => {
           state.status = STATE_STATUS.SUCCEEDED;
-          console.log(action.type);
           const updatedPost = state.postList.map((post) => {
             if (post._id === action.payload._id) {
               return action.payload;

@@ -29,7 +29,7 @@ const PostModal = ({ isOpen }: PostModalType) => {
     _id: "",
     title: "",
     message: "",
-    creator: "bluso.so",
+    creator: "",
     tags: [],
     selectedFile: "",
   };
