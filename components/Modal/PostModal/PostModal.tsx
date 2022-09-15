@@ -15,6 +15,7 @@ import {
   closeModal,
   selectSelectedPost,
 } from "../../../store/modal/modalSlice";
+import { UserLocalStorageData } from "../../Nav/Nav";
 
 type PostModalType = {
   isOpen: boolean;
@@ -34,6 +35,18 @@ const PostModal = ({ isOpen }: PostModalType) => {
     selectedFile: "",
   };
   const [postData, setPostData] = useState<NewPostType>(initPostData);
+  const [userLoggedIn, setUserLoggedIn] = useState<
+    UserLocalStorageData | undefined
+  >(undefined);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("profile");
+      if (user) {
+        setUserLoggedIn(JSON.parse(user || "").result);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (selectedPost) {
@@ -53,7 +66,9 @@ const PostModal = ({ isOpen }: PostModalType) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
-    if (postData.title && postData.message && postData.creator) {
+    console.log(postData);
+
+    if (postData.title && postData.message) {
       if (postData._id !== "") {
         dispatch(updatePost(postData));
       } else {
@@ -80,7 +95,7 @@ const PostModal = ({ isOpen }: PostModalType) => {
   return (
     <BaseModal isOpen={isOpen}>
       <PostWrapper>
-        <UserAvatar letter="S" />
+        {userLoggedIn && <UserAvatar letter={userLoggedIn.name.charAt(0)} />}
         <form autoComplete="off" noValidate onSubmit={handleSubmit}>
           <div style={{ marginBottom: "0.7em" }}>
             <Input

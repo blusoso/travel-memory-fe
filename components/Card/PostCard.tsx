@@ -10,7 +10,6 @@ import {
 } from "./PostCard.styled";
 import { ThemeContext } from "styled-components";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from "react-responsive-carousel";
 import { Post, updateLikeCount } from "../../store/post/postSlice";
 import Favorite from "../Icon/Favorite/Favorite";
 import moment from "moment";
@@ -53,6 +52,9 @@ const PostCard = ({ post }: PostCardProps) => {
     UserLocalStorageData | undefined
   >(undefined);
 
+  const postImg =
+    post.selectedFile || `${PREFIX_IMAGE_URL}/default/post-image.jpg`;
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const user = localStorage.getItem("profile");
@@ -61,9 +63,6 @@ const PostCard = ({ post }: PostCardProps) => {
       }
     }
   }, []);
-
-  const postImg =
-    post.selectedFile || `${PREFIX_IMAGE_URL}/default/post-image.jpg`;
 
   const handleCard = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -74,15 +73,21 @@ const PostCard = ({ post }: PostCardProps) => {
     dispatch(updateLikeCount({ id: post._id, isLike: isFavorite }));
   };
 
+  console.log(post.likes.includes(userLoggedIn?._id || ""));
+
   const renderIcon = () => (
     <>
       <Favorite
         top="0.8em"
         right={ICON_RIGHT_POSITION}
+        defaultFavorite={
+          userLoggedIn ? post.likes.includes(userLoggedIn._id) : false
+        }
         onFavorite={handleFavorite}
       />
-      {/* {userLoggedIn?.email === post.creator} */}
-      <PostMoreHorizon listBox={MORE_HORIZON_LIST} post={post} />
+      {userLoggedIn?._id === post.creator && (
+        <PostMoreHorizon listBox={MORE_HORIZON_LIST} post={post} />
+      )}
     </>
   );
 
@@ -108,7 +113,9 @@ const PostCard = ({ post }: PostCardProps) => {
             ))}
           </Carousel> */}
           <UserAvatarWrapper>
-            <UserAvatar letter="M" />
+            {userLoggedIn && (
+              <UserAvatar letter={userLoggedIn.name.charAt(0)} />
+            )}
           </UserAvatarWrapper>
         </ImageWrapper>
         <CardContent>

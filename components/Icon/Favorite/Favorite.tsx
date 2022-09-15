@@ -10,11 +10,23 @@ export type IconPositionProps = {
 };
 
 type FavoriteProps = {
+  defaultFavorite: boolean;
   onFavorite: (isFavorite: boolean) => void;
 } & IconPositionProps;
 
-const Favorite = ({ top, left, right, bottom, onFavorite }: FavoriteProps) => {
-  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+const Favorite = ({
+  top,
+  left,
+  right,
+  bottom,
+  defaultFavorite,
+  onFavorite,
+}: FavoriteProps) => {
+  const [isFavorite, setIsFavorite] = useState<boolean>(defaultFavorite);
+
+  useEffect(() => {
+    setIsFavorite(defaultFavorite);
+  }, [defaultFavorite]);
 
   const handleFavorite = () => {
     const toggleFav = !isFavorite;

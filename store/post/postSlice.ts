@@ -28,7 +28,8 @@ export type Post = {
   creator: string;
   tags: string[];
   selectedFile: any;
-  likeCount: number;
+  likeCount?: number;
+  likes: string[];
   createdAt: Date;
 };
 

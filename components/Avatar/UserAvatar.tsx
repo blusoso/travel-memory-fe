@@ -6,9 +6,10 @@ type UserAvatarProps = {
   letter?: string;
   image?: string;
   size?: number;
+  onClick?: () => void;
 };
 
-const UserAvatar = ({ letter, image, size = 32 }: UserAvatarProps) => {
+const UserAvatar = ({ letter, image, size = 32, onClick }: UserAvatarProps) => {
   const { whiteOverlay } = useContext(ThemeContext);
 
   return (
@@ -21,6 +22,7 @@ const UserAvatar = ({ letter, image, size = 32 }: UserAvatarProps) => {
         border: `1px solid ${whiteOverlay}`,
       }}
       src={image ? image : ""}
+      onClick={onClick}
     >
       {!!letter && letter}
     </Avatar>

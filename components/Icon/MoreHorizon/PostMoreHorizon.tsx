@@ -5,6 +5,7 @@ import { MORE_HORIZON_POST_ITEM_TEXT } from "../../Card/PostCard";
 import { useAppDispatch } from "../../../hooks/hooks";
 import { openModal } from "../../../store/modal/modalSlice";
 import { deletePost, Post } from "../../../store/post/postSlice";
+import { LisBoxPostPosition } from "./PostMoreHorizon.styled";
 
 type PostMoreHorizonProps = {
   listBox: ListItemType[];
@@ -30,7 +31,13 @@ const PostMoreHorizon = ({ listBox, post }: PostMoreHorizonProps) => {
 
   return (
     <>
-      <ListBox list={listBox} isOpen={isOpen} onSelectedItem={onSelectedItem} />
+      <LisBoxPostPosition>
+        <ListBox
+          list={listBox}
+          isOpen={isOpen}
+          onSelectedItem={onSelectedItem}
+        />
+      </LisBoxPostPosition>
       <MoreHorizon bottom="1.2em" right="0.65em" onClick={toggleListBox} />
     </>
   );

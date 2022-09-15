@@ -1,15 +1,21 @@
 import type { NextPage } from "next";
+import react, { useEffect } from "react";
 import Head from "next/head";
 import Content from "../components/Content/Content";
 import Layout from "../components/Layout/Layout";
 import PostModal from "../components/Modal/PostModal/PostModal";
-import { useAppSelector } from "../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { selectIsOpen } from "../store/modal/modalSlice";
 import { getPosts } from "../store/post/postSlice";
 import { wrapper } from "../store/store";
 
 const Home: NextPage = () => {
   const isOpen = useAppSelector(selectIsOpen);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getPosts());
+  }, []);
 
   return (
     <>
@@ -27,11 +33,11 @@ const Home: NextPage = () => {
   );
 };
 
-Home.getInitialProps = wrapper.getInitialPageProps(
-  ({ dispatch }) =>
-    async () => {
-      await dispatch(getPosts());
-    }
-);
+// Home.getInitialProps = wrapper.getInitialPageProps(
+//   ({ dispatch }) =>
+//     async () => {
+//       await dispatch(getPosts());
+//     }
+// );
 
 export default Home;

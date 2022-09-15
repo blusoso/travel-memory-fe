@@ -4,11 +4,6 @@ export const ListBoxWrapper = styled.div`
   background: ${({ theme }) => theme.mainColor};
   border-radius: ${({ theme }) => theme.borderRadius};
   min-width: 10em;
-
-  position: absolute;
-  bottom: -4em;
-  right: -1.3em;
-  z-index: 4;
 `;
 
 export const ListBoxContainer = styled.div`

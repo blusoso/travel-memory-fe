@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import SearchInput from "../Input/SearchInput/SearchInput";
 import {
+  ListBoxUserSettingPosition,
   MenuContainer,
   NavContainer,
   ProfileContainer,
@@ -12,8 +13,9 @@ import { Badge, Button } from "@mui/material";
 import UserAvatar from "../Avatar/UserAvatar";
 import { useAppDispatch } from "../../hooks/hooks";
 import { openModal } from "../../store/modal/modalSlice";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import decode from "jwt-decode";
+import ListBox, { ListItemType } from "../List/ListBox/ListBox";
 
 type MENU_LIST_TYPE = {
   name: string;
@@ -32,20 +34,43 @@ const MENU_LIST: MENU_LIST_TYPE[] = [
   { name: "calendar", link: "/" },
 ];
 
+const USER_SETTING_LIST_TEXT = {
+  LOG_OUT: "Log out",
+};
+
+const USER_SETTING_LIST = [
+  {
+    text: USER_SETTING_LIST_TEXT.LOG_OUT,
+  },
+];
+
 const Nav = () => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const { data: session } = useSession();
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState(MENU_LIST[0]);
   const [userLoggedIn, setUserLoggedIn] = useState<
     UserLocalStorageData | undefined
   >(undefined);
 
+  const logOut = () => {
+    localStorage.removeItem("profile");
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const user = localStorage.getItem("profile");
       if (user) {
-        setUserLoggedIn(JSON.parse(user || "").result);
+        setUserLoggedIn(JSON.parse(user).result);
+
+        const token = JSON.parse(user).token;
+        if (token) {
+          const decodedToken: any = decode(token);
+
+          if (decodedToken && decodedToken.exp * 1000 < new Date().getTime()) {
+            logOut();
+          }
+        }
       }
     }
   }, []);
@@ -54,15 +79,25 @@ const Nav = () => {
     if (session && session.user) {
       signOut();
     } else {
-      localStorage.removeItem("profile");
+      logOut();
     }
     location.reload();
   };
 
+  const onSelectedItem = (selectedItem: ListItemType) => {
+    if (selectedItem.text === USER_SETTING_LIST_TEXT.LOG_OUT) {
+      handleSignOut();
+    }
+  };
+
   const renderLogoutButton = () => (
-    <Button variant="outlined" onClick={handleSignOut}>
-      Sign out
-    </Button>
+    <ListBoxUserSettingPosition>
+      <ListBox
+        list={USER_SETTING_LIST}
+        isOpen={isOpen}
+        onSelectedItem={onSelectedItem}
+      />
+    </ListBoxUserSettingPosition>
   );
 
   const renderUserInfo = () => {
@@ -70,9 +105,15 @@ const Nav = () => {
       return (
         <>
           {session.user.image ? (
-            <UserAvatar image={session.user.image} />
+            <UserAvatar
+              image={session.user.image}
+              onClick={() => setIsOpen(!isOpen)}
+            />
           ) : (
-            <UserAvatar letter={session.user.email.charAt(0)} />
+            <UserAvatar
+              letter={session.user.name?.charAt(0)}
+              onClick={() => setIsOpen(!isOpen)}
+            />
           )}
           {renderLogoutButton()}
         </>
@@ -80,7 +121,10 @@ const Nav = () => {
     } else if (userLoggedIn) {
       return (
         <>
-          <UserAvatar letter={userLoggedIn.name.charAt(0)} />
+          <UserAvatar
+            letter={userLoggedIn.name.charAt(0)}
+            onClick={() => setIsOpen(!isOpen)}
+          />
           {renderLogoutButton()}
         </>
       );
@@ -124,9 +168,11 @@ const Nav = () => {
         </Badge>
         {renderUserInfo()}
       </ProfileContainer>
-      <Button variant="outlined" onClick={() => dispatch(openModal({}))}>
-        Post
-      </Button>
+      {(userLoggedIn || session) && (
+        <Button variant="outlined" onClick={() => dispatch(openModal({}))}>
+          Post
+        </Button>
+      )}
     </NavContainer>
   );
 };

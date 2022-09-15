@@ -40,6 +40,7 @@ export const ProfileContainer = styled.div`
   align-items: center;
   margin: 0 1.8em;
   gap: 1.5em;
+  position: relative;
 
   .MuiBadge-root {
     span {
@@ -47,4 +48,11 @@ export const ProfileContainer = styled.div`
       height: 5px;
     }
   }
+`;
+
+export const ListBoxUserSettingPosition = styled.div`
+  position: absolute;
+  top: 130%;
+  right: -75%;
+  z-index: 2;
 `;

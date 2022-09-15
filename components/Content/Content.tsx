@@ -10,7 +10,7 @@ const Content = () => {
   return (
     <Grid container spacing={3}>
       {!postList.length ? (
-        <CircularProgress />
+        <h1 style={{ margin: "auto", marginTop: "1em" }}>No Posts</h1>
       ) : (
         postList.map((post: Post, index: number) => (
           <Grid key={`${post.title}-${index}`} item xs={12} sm={4} lg={3}>
