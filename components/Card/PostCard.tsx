@@ -10,7 +10,7 @@ import {
 } from "./PostCard.styled";
 import { ThemeContext } from "styled-components";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Post, updateLikeCount } from "../../store/post/postSlice";
+import { Post, updateLike } from "../../store/post/postSlice";
 import Favorite from "../Icon/Favorite/Favorite";
 import moment from "moment";
 import EditIcon from "@mui/icons-material/Edit";
@@ -18,6 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PostMoreHorizon from "../Icon/MoreHorizon/PostMoreHorizon";
 import { useAppDispatch } from "../../hooks/hooks";
 import { UserLocalStorageData } from "../Nav/Nav";
+import { signIn } from "next-auth/react";
 
 const PREFIX_IMAGE_URL = "/assets/images";
 const ICON_RIGHT_POSITION = "0.65em";
@@ -70,7 +71,11 @@ const PostCard = ({ post }: PostCardProps) => {
   };
 
   const handleFavorite = (isFavorite: boolean) => {
-    dispatch(updateLikeCount({ id: post._id, isLike: isFavorite }));
+    if (userLoggedIn) {
+      dispatch(updateLike({ id: post._id, isLike: isFavorite }));
+    } else {
+      signIn();
+    }
   };
 
   console.log(post.likes.includes(userLoggedIn?._id || ""));

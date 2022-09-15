@@ -81,8 +81,8 @@ export const deletePost = createAsyncThunk(
   }
 );
 
-export const updateLikeCount = createAsyncThunk(
-  "post/updateLikeCount",
+export const updateLike = createAsyncThunk(
+  "post/updateLike",
   async ({ id, isLike }: { id: string; isLike: boolean }) => {
     const { data } = await likePost(id, isLike);
 
@@ -131,7 +131,7 @@ const postSlice = createSlice({
         }
       )
       .addMatcher(
-        isAnyOf(updatePost.fulfilled, updateLikeCount.fulfilled),
+        isAnyOf(updatePost.fulfilled, updateLike.fulfilled),
         (state, action) => {
           state.status = STATE_STATUS.SUCCEEDED;
           const updatedPost = state.postList.map((post) => {
